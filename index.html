@@ -1,324 +1,40 @@
 <!doctype html>
-<html lang="ja">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#071b3c">
-<title>九九バトル！タコ大魔王を撃破せよ！</title>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#071b3c"><title>九九バトル！タコ大魔王を撃破せよ！ 音楽強化版</title>
 <style>
-:root{--cyan:#5ef5ff;--gold:#ffd76a;--pink:#ff65c3;--ink:#07152f;--panel:rgba(8,28,64,.86)}
-*{box-sizing:border-box}body{margin:0;background:#061630;color:#fff;font-family:ui-rounded,"Hiragino Maru Gothic ProN","Yu Gothic",system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
-button{font:inherit;cursor:pointer;touch-action:manipulation}button:focus-visible{outline:3px solid #fff;outline-offset:3px}
-#game{min-height:100svh;position:relative;isolation:isolate;background:radial-gradient(ellipse at 50% 22%,#236fa2 0,#0d3a69 36%,#071b3c 72%,#030c20 100%);overflow:hidden}
-#game:before{content:"";position:absolute;inset:0;z-index:-2;background:linear-gradient(180deg,transparent 55%,rgba(2,9,27,.75)),radial-gradient(ellipse at 50% 100%,#167c9b 0,transparent 45%)}
-#game:after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.24;background-image:radial-gradient(circle at 10% 20%,#a7faff 0 2px,transparent 3px),radial-gradient(circle at 85% 31%,#a7faff 0 2px,transparent 3px),radial-gradient(circle at 25% 75%,#a7faff 0 3px,transparent 4px),radial-gradient(circle at 72% 66%,#a7faff 0 2px,transparent 3px);background-size:180px 190px,230px 220px,270px 240px,190px 250px;animation:bubbles 12s linear infinite}
-@keyframes bubbles{to{background-position:0 -220px,0 -250px,0 -180px,0 -300px}}
-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:14px clamp(12px,3vw,28px);border-bottom:1px solid #6beeff35;background:#06152dcc;backdrop-filter:blur(8px)}
-.brand{font-weight:1000;letter-spacing:.02em;font-size:clamp(16px,3.4vw,26px);text-shadow:0 3px #173b77}.brand span{color:var(--gold)}
-.stats{display:flex;gap:8px;align-items:center}.stat{background:#102b53;border:1px solid #4be6ff55;border-radius:12px;padding:7px 11px;text-align:center;min-width:66px}.stat small{display:block;color:#a5d9ef;font-size:10px;font-weight:800}.stat strong{font-size:clamp(15px,2.5vw,21px);font-variant-numeric:tabular-nums}.iconbtn{border:1px solid #69e9ff66;background:#0c2a52;color:#fff;border-radius:12px;padding:9px 11px}
-main{width:min(100%,1000px);margin:auto;padding:12px 14px 24px}.arena{position:relative;min-height:300px;height:clamp(300px,43vh,430px);display:flex;align-items:center;justify-content:center;overflow:hidden}
-ruins{display:none}.ruin{position:absolute;bottom:0;width:100%;height:35%;opacity:.42;background:linear-gradient(90deg,transparent 0 8%,#153f69 8% 13%,transparent 13% 20%,#194c76 20% 27%,transparent 27% 72%,#194c76 72% 79%,transparent 79% 87%,#153f69 87% 92%,transparent 92%);clip-path:polygon(0 30%,8% 30%,8% 0,13% 0,13% 45%,20% 45%,20% 20%,27% 20%,27% 60%,73% 60%,73% 25%,80% 25%,80% 0,86% 0,86% 40%,92% 40%,92% 15%,100% 15%,100% 100%,0 100%)}
-.sea-floor{position:absolute;bottom:-20px;left:-10%;width:120%;height:25%;border-radius:50% 50% 0 0;background:linear-gradient(#1b7890,#07304e);box-shadow:0 -12px 45px #37eaff24}
-.light-rays{position:absolute;top:-40%;left:15%;width:70%;height:100%;background:linear-gradient(110deg,transparent 15%,#77f4ff13 24%,transparent 34%,#77f4ff10 47%,transparent 58%,#77f4ff12 70%,transparent 80%);transform:skewX(-10deg)}
-.boss-wrap{position:relative;z-index:2;transform:translateY(5px);transition:filter .2s}.boss-wrap.hit{animation:hit .34s ease}.boss-wrap.angry .octo-head{filter:hue-rotate(-22deg) saturate(1.3)}.boss-wrap.critical{filter:drop-shadow(0 0 24px #ff367c)}
-@keyframes hit{0%,100%{transform:translate(0,5px) rotate(0)}25%{transform:translate(-20px,0) rotate(-5deg)}65%{transform:translate(15px,2px) rotate(4deg)}}
-.octo{width:clamp(190px,35vw,300px);height:auto;overflow:visible;filter:drop-shadow(0 18px 12px #03102799);animation:float 3s ease-in-out infinite}
-@keyframes float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-10px) rotate(1deg)}}
-.tentacle{transform-origin:150px 170px;animation:wiggle 1.8s ease-in-out infinite}.tentacle:nth-child(even){animation-delay:-.8s}.tentacle:nth-child(3n){animation-delay:-.3s}
-@keyframes wiggle{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(5deg)}}
-.boss-name{position:absolute;top:14px;left:50%;transform:translateX(-50%);white-space:nowrap;border:1px solid #ff8ed788;background:#401c56c9;border-radius:999px;padding:7px 16px;font-size:13px;font-weight:900;letter-spacing:.08em;box-shadow:0 0 22px #ff4fa72b}
-.hp-box{position:absolute;top:53px;left:50%;transform:translateX(-50%);width:min(390px,85%)}.hp-label{display:flex;justify-content:space-between;font-size:11px;font-weight:900;margin-bottom:5px;color:#e6f9ff}.hp-track{height:13px;background:#261b43;border:2px solid #ffb4e5;border-radius:99px;overflow:hidden;box-shadow:0 0 14px #ff65c355}.hp-fill{height:100%;width:100%;background:linear-gradient(90deg,#ff4b8b,#ff9dca);border-radius:99px;transition:width .35s}
-.hero{position:absolute;left:clamp(4px,8vw,90px);bottom:30px;width:95px;z-index:3;filter:drop-shadow(0 8px 6px #03102799);animation:heroBob 2.2s ease-in-out infinite}
-@keyframes heroBob{50%{transform:translateY(-8px)}}
-.hero .shield{position:absolute;right:-10px;top:22px;font-size:35px;transform:rotate(-12deg)}
-.speech{position:absolute;right:clamp(8px,8vw,80px);bottom:32px;max-width:210px;background:#fff;color:#17284b;border:3px solid #8af8ff;border-radius:18px;padding:10px 13px;font-weight:900;font-size:clamp(12px,2vw,15px);box-shadow:0 5px 0 #216a8d;z-index:4}.speech:after{content:"";position:absolute;left:20px;bottom:-12px;border-width:12px 12px 0 0;border-style:solid;border-color:#8af8ff transparent transparent transparent}
-.float-text{position:absolute;z-index:8;font-weight:1000;font-size:clamp(25px,5vw,43px);color:var(--gold);text-shadow:0 3px #a34400,0 0 18px #fff;pointer-events:none;animation:floatText .9s ease-out forwards}
-@keyframes floatText{to{transform:translateY(-65px) scale(1.2);opacity:0}}
-.flash{position:absolute;inset:0;z-index:7;pointer-events:none;background:#d8ffff;animation:flash .22s ease-out forwards}.screen-shake{animation:shake .25s}
-@keyframes flash{to{opacity:0}}@keyframes shake{25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
-.combat-panel{background:linear-gradient(145deg,#102c52ed,#07172fed);border:1px solid #64e8ff70;border-radius:22px;padding:clamp(14px,3vw,24px);box-shadow:0 16px 40px #02091888,inset 0 1px #ffffff18;position:relative}
-.question-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.eyebrow{color:#8cecff;font-size:11px;letter-spacing:.15em;font-weight:1000}.question{font-size:clamp(32px,7vw,56px);font-weight:1000;letter-spacing:.02em;text-shadow:0 4px #153c77;line-height:1.1;margin-top:4px}.timer{width:90px;flex-shrink:0}.timer-num{text-align:center;font-weight:1000;font-size:20px;margin-bottom:5px}.timer-track{height:8px;border-radius:99px;background:#061127;overflow:hidden}.timer-fill{height:100%;width:100%;background:linear-gradient(90deg,#3bffc5,#caff85);transition:width .1s linear}.timer-fill.low{background:linear-gradient(90deg,#ff3e6c,#ffb23e)}
-.answers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.answer{min-height:65px;border:1px solid #75edff9c;border-bottom:5px solid #197ca2;border-radius:15px;background:linear-gradient(180deg,#1a5580,#12335d);color:#fff;font-size:clamp(21px,4vw,30px);font-weight:1000;box-shadow:0 4px 12px #020c1f66;transition:transform .12s,filter .12s}.answer:hover{filter:brightness(1.18);transform:translateY(-2px)}.answer:active{transform:translateY(3px);border-bottom-width:2px}.answer:disabled{cursor:default;opacity:.9}.answer.correct{background:linear-gradient(#2de5a4,#087a78);border-color:#8bffdb}.answer.wrong{background:linear-gradient(#ff6687,#a72558);border-color:#ffc2d3}
-.feedback{min-height:26px;margin-top:12px;text-align:center;font-weight:900;color:#d7f8ff;font-size:14px}.feedback.good{color:#70ffd2}.feedback.bad{color:#ffabc4}
-.progress-line{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;color:#a9d9ef;font-size:12px;font-weight:800;margin-top:14px}
-button.primary{border:0;border-radius:14px;padding:13px 22px;background:linear-gradient(135deg,#ffe17c,#ff9f4c);color:#332047;font-weight:1000;box-shadow:0 5px 0 #a84e35,0 10px 24px #ff9b4c2e}button.secondary{border:1px solid #68eaff7a;border-radius:14px;padding:12px 18px;background:#11335b;color:white;font-weight:900}
-.overlay{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:18px;background:#020a1bdc;backdrop-filter:blur(9px)}.modal{width:min(100%,540px);max-height:90svh;overflow:auto;text-align:center;border:1px solid #69efff88;border-radius:28px;background:radial-gradient(ellipse at top,#1a527a,#0a1d3b 68%);padding:clamp(22px,5vw,38px);box-shadow:0 0 70px #16d8ff20}.modal h1{font-size:clamp(27px,6vw,43px);line-height:1.18;margin:10px 0 12px;text-shadow:0 4px #16396d}.modal p{color:#c8eafa;line-height:1.8}.modal .big-octo{font-size:74px;filter:drop-shadow(0 0 20px #fa6cce55)}.modal-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:22px}.hidden{display:none!important}.pill{display:inline-block;background:#153d62;border:1px solid #70e8ff55;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:900;color:#aef7ff}.result-num{font-size:38px;font-weight:1000;color:var(--gold)}.review{text-align:left;background:#071831a8;border-radius:14px;padding:12px;margin-top:14px;max-height:150px;overflow:auto;font-size:13px;line-height:1.8}.foot{text-align:center;color:#72a9c6;font-size:11px;padding:12px}
-@media(max-width:560px){header{align-items:flex-start;flex-wrap:wrap}.brand{width:100%;text-align:center}.stats{flex:1;justify-content:center}.stat{min-width:60px;padding:6px 8px}.iconbtn{padding:8px}.arena{height:330px;min-height:330px}.hero{width:72px;left:12px;bottom:22px}.hero .shield{font-size:27px}.speech{right:8px;bottom:22px;max-width:155px;padding:8px 10px}.boss-name{top:12px}.hp-box{top:48px}.answers{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.answer{min-height:59px}.question-row{align-items:center}.timer{width:66px}.combat-panel{border-radius:18px}.progress-line{font-size:11px}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
-</style>
-</head>
-<body>
-<div id="game">
-<header>
-  <div class="brand">🐚 九九バトル！<span>タコ大魔王</span>を撃破せよ！</div>
-  <div class="stats">
-    <div class="stat"><small>SCORE</small><strong id="score">0000</strong></div>
-    <div class="stat"><small>COMBO</small><strong id="combo">0 🔥</strong></div>
-    <div class="stat"><small>BEST</small><strong id="best">0</strong></div>
-  </div>
-  <button class="iconbtn" id="soundBtn" aria-label="効果音切り替え">🔊 音 ON</button>
-</header>
-<main>
-  <section class="arena" id="arena" aria-label="海底ボスバトル">
-    <div class="light-rays"></div><div class="ruin"></div><div class="sea-floor"></div>
-    <div class="boss-name" id="bossName">深海の支配者・タコ大魔王</div>
-    <div class="hp-box"><div class="hp-label"><span>🐙 BOSS HP</span><span id="hpText">3000 / 3000</span></div><div class="hp-track"><div class="hp-fill" id="hpFill"></div></div></div>
-    <div class="hero" aria-label="海の勇者">
-      <svg viewBox="0 0 100 120" width="100%" role="img" aria-label="小さな海の勇者">
-        <defs><linearGradient id="armor" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#79fff1"/><stop offset="1" stop-color="#228bd2"/></linearGradient></defs>
-        <path d="M23 53 Q6 38 12 24 Q28 29 35 44" fill="#ffbf67" stroke="#fff0bb" stroke-width="3"/>
-        <circle cx="49" cy="27" r="20" fill="#ffd3a0" stroke="#fff1d4" stroke-width="3"/>
-        <path d="M29 24 Q29 2 52 6 Q72 8 69 27 L60 20 L43 21Z" fill="#f7d95f" stroke="#fff1ad" stroke-width="3"/>
-        <path d="M37 28 Q43 23 47 29 M55 29 Q61 23 65 28" fill="none" stroke="#2c3b62" stroke-width="3" stroke-linecap="round"/>
-        <path d="M45 38 Q51 43 57 37" fill="none" stroke="#c05d54" stroke-width="2.5" stroke-linecap="round"/>
-        <path d="M30 50 Q50 42 69 51 L76 83 L25 83Z" fill="url(#armor)" stroke="#b9ffff" stroke-width="3"/>
-        <path d="M30 57 L12 76 L19 82 L38 67 M67 57 L84 70 L78 78 L62 68" fill="#ffd3a0" stroke="#fff1d4" stroke-width="3" stroke-linejoin="round"/>
-        <path d="M34 82 L31 105 L44 105 L50 86 L57 105 L70 105 L65 81" fill="#244e8d" stroke="#8ceeff" stroke-width="3" stroke-linejoin="round"/>
-        <path d="M29 108 L45 108 M56 108 L73 108" stroke="#ffce77" stroke-width="7" stroke-linecap="round"/>
-      </svg><span class="shield">🛡️</span>
-    </div>
-    <div class="boss-wrap" id="bossWrap">
-      <svg class="octo" viewBox="0 0 300 290" role="img" aria-label="巨大な紫色のタコ大魔王">
-        <defs>
-          <radialGradient id="skin" cx="35%" cy="20%" r="80%"><stop stop-color="#ff9bf0"/><stop offset=".42" stop-color="#b64de2"/><stop offset="1" stop-color="#6126a5"/></radialGradient>
-          <radialGradient id="belly" cx="45%" cy="25%" r="80%"><stop stop-color="#ffdbfb"/><stop offset="1" stop-color="#e57bdc"/></radialGradient>
-          <linearGradient id="sucker"><stop stop-color="#ffbded"/><stop offset="1" stop-color="#8e35c2"/></linearGradient>
-        </defs>
-        <g fill="none" stroke="url(#skin)" stroke-width="22" stroke-linecap="round">
-          <path class="tentacle" d="M92 160 C48 168 67 203 38 214 C8 226 23 254 52 249"/>
-          <path class="tentacle" d="M111 174 C78 202 105 222 83 244 C67 260 86 275 108 264"/>
-          <path class="tentacle" d="M132 181 C113 220 143 232 130 254 C121 273 144 281 159 262"/>
-          <path class="tentacle" d="M155 181 C165 215 184 221 178 245 C173 265 198 274 211 252"/>
-          <path class="tentacle" d="M178 172 C215 192 199 220 226 229 C252 238 249 258 225 265"/>
-          <path class="tentacle" d="M196 151 C239 155 233 188 260 190 C283 193 287 216 264 225"/>
-          <path class="tentacle" d="M91 137 C55 122 57 95 36 91 C17 86 20 66 38 61"/>
-          <path class="tentacle" d="M202 130 C240 111 234 87 257 79 C277 72 270 53 251 51"/>
-        </g>
-        <g fill="url(#sucker)" stroke="#ffe0fa" stroke-width="2">
-          <circle cx="42" cy="230" r="5"/><circle cx="56" cy="242" r="5"/><circle cx="89" cy="244" r="5"/><circle cx="102" cy="258" r="5"/><circle cx="132" cy="251" r="5"/><circle cx="148" cy="265" r="5"/><circle cx="181" cy="242" r="5"/><circle cx="197" cy="258" r="5"/><circle cx="229" cy="231" r="5"/><circle cx="245" cy="249" r="5"/><circle cx="260" cy="202" r="5"/><circle cx="272" cy="215" r="5"/>
-        </g>
-        <path class="octo-head" d="M69 142 C58 98 81 45 133 35 C174 22 221 48 230 91 C239 130 213 161 183 169 C149 180 91 166 69 142Z" fill="url(#skin)" stroke="#ffc5fa" stroke-width="4"/>
-        <path d="M88 135 C100 156 137 163 169 154 C190 148 207 133 210 116 C198 140 165 146 139 143 C119 141 103 136 88 135Z" fill="url(#belly)" opacity=".85"/>
-        <path d="M91 76 Q108 61 124 78" fill="none" stroke="#702b9c" stroke-width="8" stroke-linecap="round"/>
-        <path d="M174 78 Q191 61 207 76" fill="none" stroke="#702b9c" stroke-width="8" stroke-linecap="round"/>
-        <ellipse cx="112" cy="94" rx="23" ry="27" fill="#fff7ff" stroke="#70269b" stroke-width="3"/>
-        <ellipse cx="190" cy="94" rx="23" ry="27" fill="#fff7ff" stroke="#70269b" stroke-width="3"/>
-        <ellipse id="eyeL" cx="118" cy="98" rx="10" ry="15" fill="#22204d"/><ellipse id="eyeR" cx="184" cy="98" rx="10" ry="15" fill="#22204d"/>
-        <circle cx="121" cy="92" r="4" fill="#fff"/><circle cx="187" cy="92" r="4" fill="#fff"/>
-        <path id="mouth" d="M130 125 Q151 141 172 124" fill="none" stroke="#69205f" stroke-width="6" stroke-linecap="round"/>
-        <path d="M83 45 Q100 17 129 31 L146 43 L164 27 Q196 13 219 45 L211 56 L91 56Z" fill="#ffd45d" stroke="#fff1a1" stroke-width="4"/>
-        <path d="M130 29 L145 10 L159 30 L173 12 L183 34" fill="#ffb74f" stroke="#fff1a1" stroke-width="4" stroke-linejoin="round"/>
-        <circle cx="78" cy="111" r="6" fill="#ff8bcf" opacity=".9"/><circle cx="220" cy="111" r="6" fill="#ff8bcf" opacity=".9"/>
-      </svg>
-    </div>
-    <div class="speech" id="speech">フハハハ！九九で勝負だ！</div>
-  </section>
-
-  <section class="combat-panel" id="combatPanel">
-    <div class="question-row"><div><div class="eyebrow">⚡ CHALLENGE <span id="qNumber">01</span></div><div class="question" id="question">6 × 8 ＝ ?</div></div>
-      <div class="timer"><div class="timer-num"><span id="timeNum">10.0</span><small> 秒</small></div><div class="timer-track"><div class="timer-fill" id="timerFill"></div></div></div>
-    </div>
-    <div class="answers" id="answers">
-      <button class="answer">48</button><button class="answer">42</button><button class="answer">54</button><button class="answer">46</button>
-    </div>
-    <div class="feedback" id="feedback" aria-live="polite">正解を選んでタコに攻撃しよう！</div>
-    <div class="progress-line"><span id="stage">🌊 STAGE 1：海底城</span><span id="accuracy">正解率 --%</span><span>目標：3,000 pt</span></div>
-  </section>
-  <div class="foot">ヒント：正解で100pt以上！コンボをつなげて必殺技を決めよう。</div>
-</main>
-</div>
-
-<div class="overlay" id="startOverlay">
-  <div class="modal">
-    <div class="big-octo">🐙</div><div class="pill">UNDERSEA BOSS BATTLE</div>
-    <h1>九九バトル！<br><span style="color:#ffb9f0">タコ大魔王</span>を撃破せよ！</h1>
-    <p>九九の正解で攻撃！コンボをつなげてパワーをため、<br>3,000ポイントで必殺技をぶちかませ！</p>
-    <p>⏱ 1問10秒　⚔️ 正解で100pt〜　🔥 コンボボーナス</p>
-    <div class="modal-actions"><button class="primary" id="startBtn">⚔️ バトル開始！</button><button class="secondary" id="howBtn">遊び方</button></div>
-    <p id="howText" class="hidden">4つの答えから正しいものをタップ！間違えても大丈夫。答えを覚えて次に活かそう。タコのHPをゼロにすれば勝利！</p>
-  </div>
-</div>
-
-<div class="overlay hidden" id="resultOverlay">
-  <div class="modal">
-    <div class="big-octo" id="resultIcon">🏆</div><div class="pill">MISSION COMPLETE</div>
-    <h1 id="resultTitle">タコ大魔王 撃破！！</h1>
-    <p id="resultMessage">九九パワーMAX！</p>
-    <div class="result-num" id="finalScore">3,000 pt</div>
-    <p id="resultStats">正解数 0 / 0　正解率 0%</p>
-    <p id="bestMessage"></p>
-    <div class="review hidden" id="review"></div>
-    <div class="modal-actions"><button class="primary" id="retryBtn">🔁 もう一度挑戦！</button><button class="secondary" id="reviewBtn">まちがい復習</button></div>
-  </div>
-</div>
+:root{--cyan:#5ef5ff;--gold:#ffd76a;--pink:#ff65c3}*{box-sizing:border-box}body{margin:0;background:#061630;color:#fff;font-family:ui-rounded,"Hiragino Maru Gothic ProN","Yu Gothic",system-ui,sans-serif}button{font:inherit;cursor:pointer;touch-action:manipulation}button:focus-visible{outline:3px solid white;outline-offset:2px}#game{min-height:100svh;background:radial-gradient(ellipse at 50% 25%,#236fa2,#0d3a69 40%,#030c20 100%);overflow:hidden;position:relative}#game:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.22;background-image:radial-gradient(circle,#a7faff 0 2px,transparent 3px);background-size:95px 115px;animation:bubbles 13s linear infinite}@keyframes bubbles{to{background-position:0 -230px}}header{position:relative;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 14px;background:#06152dcc;border-bottom:1px solid #6beeff55;flex-wrap:wrap}.brand{font-weight:1000;font-size:clamp(17px,3vw,25px);text-shadow:0 3px #173b77}.brand span{color:var(--gold)}.stats{display:flex;gap:6px}.stat{background:#102b53;border:1px solid #4be6ff55;border-radius:11px;padding:6px 9px;text-align:center;min-width:57px}.stat small{display:block;color:#a5d9ef;font-size:10px}.stat strong{font-size:17px}.sounds{display:flex;gap:5px}.iconbtn{border:1px solid #69e9ff66;background:#0c2a52;color:white;border-radius:11px;padding:9px;font-size:12px;font-weight:800}.iconbtn.off{opacity:.6}main{position:relative;width:min(100%,950px);margin:auto;padding:10px 12px 25px}.arena{height:clamp(315px,43vh,430px);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}.sea-floor{position:absolute;bottom:-20px;left:-10%;width:120%;height:25%;border-radius:50% 50% 0 0;background:linear-gradient(#1b7890,#07304e);box-shadow:0 -12px 45px #37eaff24}.rays{position:absolute;top:-30%;width:75%;height:110%;background:linear-gradient(110deg,transparent 10%,#77f4ff18 24%,transparent 36%,#77f4ff10 48%,transparent 60%,#77f4ff12 72%,transparent 85%)}.boss-wrap{position:relative;z-index:2;transition:filter .2s}.boss-wrap.hit{animation:hit .34s}.boss-wrap.angry .octo-head{filter:hue-rotate(-22deg) saturate(1.3)}.boss-wrap.critical{filter:drop-shadow(0 0 24px #ff367c)}@keyframes hit{25%{transform:translateX(-18px) rotate(-5deg)}65%{transform:translateX(14px) rotate(4deg)}}.octo{width:clamp(190px,35vw,300px);overflow:visible;filter:drop-shadow(0 18px 12px #03102799);animation:float 3s ease-in-out infinite}@keyframes float{50%{transform:translateY(-10px) rotate(2deg)}}.tentacle{transform-origin:150px 170px;animation:wiggle 1.8s ease-in-out infinite}.tentacle:nth-child(even){animation-delay:-.8s}@keyframes wiggle{50%{transform:rotate(5deg)}0%,100%{transform:rotate(-4deg)}}.boss-name{position:absolute;top:12px;left:50%;transform:translateX(-50%);white-space:nowrap;border:1px solid #ff8ed788;background:#401c56c9;border-radius:99px;padding:7px 14px;font-size:12px;font-weight:900}.hp-box{position:absolute;top:49px;left:50%;transform:translateX(-50%);width:min(390px,85%)}.hp-label{display:flex;justify-content:space-between;font-size:11px;font-weight:900;margin-bottom:5px}.hp-track{height:13px;background:#261b43;border:2px solid #ffb4e5;border-radius:99px;overflow:hidden}.hp-fill{height:100%;width:100%;background:linear-gradient(90deg,#ff4b8b,#ff9dca);transition:width .35s}.hero{position:absolute;left:clamp(5px,7vw,75px);bottom:25px;width:90px;z-index:3;animation:heroBob 2.2s ease-in-out infinite}@keyframes heroBob{50%{transform:translateY(-8px)}}.shield{position:absolute;right:-9px;top:20px;font-size:30px}.speech{position:absolute;right:clamp(7px,7vw,75px);bottom:30px;max-width:190px;background:white;color:#17284b;border:3px solid #8af8ff;border-radius:16px;padding:9px 11px;font-weight:900;font-size:13px;box-shadow:0 5px #216a8d;z-index:4}.float-text{position:absolute;z-index:8;font-weight:1000;font-size:clamp(25px,5vw,42px);color:var(--gold);text-shadow:0 3px #a34400,0 0 18px white;pointer-events:none;animation:floatText .9s forwards}@keyframes floatText{to{transform:translateY(-65px) scale(1.2);opacity:0}}.flash{position:absolute;inset:0;z-index:7;pointer-events:none;background:#d8ffff;animation:flash .22s forwards}@keyframes flash{to{opacity:0}}.screen-shake{animation:shake .25s}@keyframes shake{25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}.combat-panel{background:linear-gradient(145deg,#102c52ed,#07172fed);border:1px solid #64e8ff70;border-radius:20px;padding:clamp(14px,3vw,24px);box-shadow:0 16px 40px #02091888}.question-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.eyebrow{color:#8cecff;font-size:11px;letter-spacing:.14em;font-weight:1000}.question{font-size:clamp(33px,7vw,55px);font-weight:1000;text-shadow:0 4px #153c77}.timer{width:80px;flex-shrink:0}.timer-num{text-align:center;font-weight:1000;font-size:20px;margin-bottom:5px}.timer-track{height:8px;border-radius:99px;background:#061127;overflow:hidden}.timer-fill{height:100%;width:100%;background:linear-gradient(90deg,#3bffc5,#caff85)}.timer-fill.low{background:linear-gradient(90deg,#ff3e6c,#ffb23e)}.answers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.answer{min-height:65px;border:1px solid #75edff9c;border-bottom:5px solid #197ca2;border-radius:15px;background:linear-gradient(#1a5580,#12335d);color:white;font-size:clamp(21px,4vw,30px);font-weight:1000}.answer:active{transform:translateY(3px)}.answer.correct{background:linear-gradient(#2de5a4,#087a78)}.answer.wrong{background:linear-gradient(#ff6687,#a72558)}.feedback{min-height:26px;margin-top:12px;text-align:center;font-weight:900;color:#d7f8ff;font-size:14px}.feedback.good{color:#70ffd2}.feedback.bad{color:#ffabc4}.progress-line{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;color:#a9d9ef;font-size:12px;font-weight:800;margin-top:14px}.primary{border:0;border-radius:14px;padding:13px 22px;background:linear-gradient(135deg,#ffe17c,#ff9f4c);color:#332047;font-weight:1000;box-shadow:0 5px #a84e35}.secondary{border:1px solid #68eaff7a;border-radius:14px;padding:12px 18px;background:#11335b;color:white;font-weight:900}.overlay{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:18px;background:#020a1bdc;backdrop-filter:blur(9px)}.modal{width:min(100%,540px);max-height:90svh;overflow:auto;text-align:center;border:1px solid #69efff88;border-radius:26px;background:radial-gradient(ellipse at top,#1a527a,#0a1d3b 68%);padding:clamp(22px,5vw,38px);box-shadow:0 0 70px #16d8ff20}.modal h1{font-size:clamp(27px,6vw,42px);line-height:1.2;margin:10px 0}.modal p{color:#c8eafa;line-height:1.7}.big-octo{font-size:70px}.modal-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:20px}.hidden{display:none!important}.pill{display:inline-block;background:#153d62;border:1px solid #70e8ff55;border-radius:99px;padding:6px 10px;font-size:12px;font-weight:900;color:#aef7ff}.result-num{font-size:38px;font-weight:1000;color:var(--gold)}.review{text-align:left;background:#071831a8;border-radius:14px;padding:12px;margin-top:14px;max-height:150px;overflow:auto;font-size:13px;line-height:1.8}.foot{text-align:center;color:#91bfd8;font-size:11px;padding:12px}@media(max-width:560px){header{justify-content:center}.brand{width:100%;text-align:center}.arena{height:330px}.hero{width:72px;left:9px;bottom:22px}.speech{right:7px;bottom:22px;max-width:145px;font-size:12px}.answers{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.answer{min-height:59px}.timer{width:65px}.progress-line{font-size:11px}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style></head><body><div id="game"><header><div class="brand">🐚 九九バトル！<span>タコ大魔王</span>を撃破せよ！</div><div class="stats"><div class="stat"><small>SCORE</small><strong id="score">0000</strong></div><div class="stat"><small>COMBO</small><strong id="combo">0 🔥</strong></div><div class="stat"><small>BEST</small><strong id="best">0</strong></div></div><div class="sounds"><button class="iconbtn" id="bgmBtn" aria-label="BGM切り替え">🎵 BGM ON</button><button class="iconbtn" id="sfxBtn" aria-label="効果音切り替え">🔊 効果音 ON</button></div></header><main><section class="arena" id="arena"><div class="rays"></div><div class="sea-floor"></div><div class="boss-name" id="bossName">深海の支配者・タコ大魔王</div><div class="hp-box"><div class="hp-label"><span>🐙 BOSS HP</span><span id="hpText">3000 / 3000</span></div><div class="hp-track"><div class="hp-fill" id="hpFill"></div></div></div><div class="hero"><svg viewBox="0 0 100 120" width="100%" aria-label="海の勇者"><defs><linearGradient id="armor" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#79fff1"/><stop offset="1" stop-color="#228bd2"/></linearGradient></defs><path d="M23 53 Q6 38 12 24 Q28 29 35 44" fill="#ffbf67" stroke="#fff0bb" stroke-width="3"/><circle cx="49" cy="27" r="20" fill="#ffd3a0" stroke="#fff1d4" stroke-width="3"/><path d="M29 24 Q29 2 52 6 Q72 8 69 27 L60 20 L43 21Z" fill="#f7d95f" stroke="#fff1ad" stroke-width="3"/><path d="M37 28 Q43 23 47 29 M55 29 Q61 23 65 28" fill="none" stroke="#2c3b62" stroke-width="3" stroke-linecap="round"/><path d="M45 38 Q51 43 57 37" fill="none" stroke="#c05d54" stroke-width="2.5"/><path d="M30 50 Q50 42 69 51 L76 83 L25 83Z" fill="url(#armor)" stroke="#b9ffff" stroke-width="3"/><path d="M30 57 L12 76 L19 82 L38 67 M67 57 L84 70 L78 78 L62 68" fill="#ffd3a0" stroke="#fff1d4" stroke-width="3"/><path d="M34 82 L31 105 L44 105 L50 86 L57 105 L70 105 L65 81" fill="#244e8d" stroke="#8ceeff" stroke-width="3"/><path d="M29 108 L45 108 M56 108 L73 108" stroke="#ffce77" stroke-width="7" stroke-linecap="round"/></svg><span class="shield">🛡️</span></div><div class="boss-wrap" id="bossWrap"><svg class="octo" viewBox="0 0 300 290" aria-label="巨大な紫色のタコ大魔王"><defs><radialGradient id="skin" cx="35%" cy="20%" r="80%"><stop stop-color="#ff9bf0"/><stop offset=".42" stop-color="#b64de2"/><stop offset="1" stop-color="#6126a5"/></radialGradient><radialGradient id="belly"><stop stop-color="#ffdbfb"/><stop offset="1" stop-color="#e57bdc"/></radialGradient></defs><g fill="none" stroke="url(#skin)" stroke-width="22" stroke-linecap="round"><path class="tentacle" d="M92 160 C48 168 67 203 38 214 C8 226 23 254 52 249"/><path class="tentacle" d="M111 174 C78 202 105 222 83 244 C67 260 86 275 108 264"/><path class="tentacle" d="M132 181 C113 220 143 232 130 254 C121 273 144 281 159 262"/><path class="tentacle" d="M155 181 C165 215 184 221 178 245 C173 265 198 274 211 252"/><path class="tentacle" d="M178 172 C215 192 199 220 226 229 C252 238 249 258 225 265"/><path class="tentacle" d="M196 151 C239 155 233 188 260 190 C283 193 287 216 264 225"/><path class="tentacle" d="M91 137 C55 122 57 95 36 91 C17 86 20 66 38 61"/><path class="tentacle" d="M202 130 C240 111 234 87 257 79 C277 72 270 53 251 51"/></g><path class="octo-head" d="M69 142 C58 98 81 45 133 35 C174 22 221 48 230 91 C239 130 213 161 183 169 C149 180 91 166 69 142Z" fill="url(#skin)" stroke="#ffc5fa" stroke-width="4"/><path d="M88 135 C100 156 137 163 169 154 C190 148 207 133 210 116 C198 140 165 146 139 143 C119 141 103 136 88 135Z" fill="url(#belly)" opacity=".85"/><path d="M91 76 Q108 61 124 78 M174 78 Q191 61 207 76" fill="none" stroke="#702b9c" stroke-width="8" stroke-linecap="round"/><ellipse cx="112" cy="94" rx="23" ry="27" fill="#fff7ff" stroke="#70269b" stroke-width="3"/><ellipse cx="190" cy="94" rx="23" ry="27" fill="#fff7ff" stroke="#70269b" stroke-width="3"/><ellipse id="eyeL" cx="118" cy="98" rx="10" ry="15" fill="#22204d"/><ellipse id="eyeR" cx="184" cy="98" rx="10" ry="15" fill="#22204d"/><circle cx="121" cy="92" r="4" fill="#fff"/><circle cx="187" cy="92" r="4" fill="#fff"/><path id="mouth" d="M130 125 Q151 141 172 124" fill="none" stroke="#69205f" stroke-width="6" stroke-linecap="round"/><path d="M83 45 Q100 17 129 31 L146 43 L164 27 Q196 13 219 45 L211 56 L91 56Z" fill="#ffd45d" stroke="#fff1a1" stroke-width="4"/><path d="M130 29 L145 10 L159 30 L173 12 L183 34" fill="#ffb74f" stroke="#fff1a1" stroke-width="4" stroke-linejoin="round"/></svg></div><div class="speech" id="speech">フハハハ！九九で勝負だ！</div></section><section class="combat-panel" id="combatPanel"><div class="question-row"><div><div class="eyebrow">⚡ CHALLENGE <span id="qNumber">01</span></div><div class="question" id="question">6 × 8 ＝ ?</div></div><div class="timer"><div class="timer-num"><span id="timeNum">10.0</span><small> 秒</small></div><div class="timer-track"><div class="timer-fill" id="timerFill"></div></div></div></div><div class="answers" id="answers"><button class="answer">48</button><button class="answer">42</button><button class="answer">54</button><button class="answer">46</button></div><div class="feedback" id="feedback" aria-live="polite">正解を選んでタコに攻撃しよう！</div><div class="progress-line"><span id="stage">🌊 STAGE 1：海底城</span><span id="accuracy">正解率 --%</span><span>目標：3,000 pt</span></div></section><div class="foot">🎧 BGMと効果音は別々に切り替え可能！ 正解を重ねて必殺技を決めよう。</div></main></div><div class="overlay" id="startOverlay"><div class="modal"><div class="big-octo">🐙</div><div class="pill">🎵 MUSIC POWERED BATTLE</div><h1>九九バトル！<br><span style="color:#ffb9f0">タコ大魔王</span>を撃破せよ！</h1><p>九九の正解で攻撃！コンボをつなげて<br>3,000ポイントでタコ大魔王を倒そう！</p><p>⏱ 1問10秒　⚔️ 正解で100pt〜　🔥 コンボボーナス</p><div class="modal-actions"><button class="primary" id="startBtn">⚔️ バトル開始！</button><button class="secondary" id="howBtn">遊び方</button></div><p id="howText" class="hidden">4つの答えから正しいものをタップ！間違えても大丈夫。答えを覚えて次に活かそう。タコのHPをゼロにすれば勝利！</p></div></div><div class="overlay hidden" id="resultOverlay"><div class="modal"><div class="big-octo">🏆</div><div class="pill">MISSION COMPLETE</div><h1>タコ大魔王 撃破！！</h1><p>九九パワーMAX！海の平和を取り戻した！</p><div class="result-num" id="finalScore">3,000 pt</div><p id="resultStats"></p><p id="bestMessage"></p><div class="review hidden" id="review"></div><div class="modal-actions"><button class="primary" id="retryBtn">🔁 もう一度挑戦！</button><button class="secondary hidden" id="reviewBtn">まちがい復習</button></div></div></div>
 <script>
-(() => {
-  const TARGET = 3000, ROUND_TIME = 10;
-  const $ = id => document.getElementById(id);
-  const els = {
-    score:$('score'), combo:$('combo'), best:$('best'), soundBtn:$('soundBtn'),
-    hpText:$('hpText'), hpFill:$('hpFill'), bossWrap:$('bossWrap'), bossName:$('bossName'),
-    eyeL:$('eyeL'), eyeR:$('eyeR'), mouth:$('mouth'), speech:$('speech'),
-    question:$('question'), qNumber:$('qNumber'), timeNum:$('timeNum'), timerFill:$('timerFill'),
-    answers:$('answers'), feedback:$('feedback'), stage:$('stage'), accuracy:$('accuracy'),
-    arena:$('arena'), panel:$('combatPanel'), startOverlay:$('startOverlay'), resultOverlay:$('resultOverlay'),
-    howText:$('howText'), resultIcon:$('resultIcon'), resultTitle:$('resultTitle'),
-    resultMessage:$('resultMessage'), finalScore:$('finalScore'), resultStats:$('resultStats'),
-    bestMessage:$('bestMessage'), review:$('review'), reviewBtn:$('reviewBtn')
-  };
-  let score=0, combo=0, bestCombo=0, asked=0, correct=0, current=null, timeLeft=ROUND_TIME;
-  let running=false, locked=false, soundOn=true, timerId=null, nextId=null, lastKey='', wrongs=[], audioCtx=null, roundStart=0;
-  let bestScore=Number(localStorage.getItem('octoBestScore')||0), personalBest=Number(localStorage.getItem('octoBestCombo')||0);
-  els.best.textContent=bestScore; 
-
-  function audio(freq=440,duration=.09,type='sine',volume=.045,slide=0){
-    if(!soundOn)return;
-    try{
-      audioCtx ||= new (window.AudioContext||window.webkitAudioContext)();
-      if(audioCtx.state==='suspended') audioCtx.resume();
-      const o=audioCtx.createOscillator(),g=audioCtx.createGain();
-      o.type=type;o.frequency.setValueAtTime(freq,audioCtx.currentTime);
-      if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(40,freq+slide),audioCtx.currentTime+duration);
-      g.gain.setValueAtTime(volume,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);
-      o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+duration);
-    }catch(e){}
-  }
-  function fanfare(){[523,659,784,1047].forEach((f,i)=>setTimeout(()=>audio(f,.22,'triangle',.06,120),i*110));}
-  els.soundBtn.addEventListener('click',()=>{soundOn=!soundOn;els.soundBtn.textContent=soundOn?'🔊 音 ON':'🔇 音 OFF';if(soundOn)audio(660,.08);});
-  function makeQuestion(){
-    let a,b,key;
-    do{a=1+Math.floor(Math.random()*9);b=1+Math.floor(Math.random()*9);key=`${a}x${b}`;}while(key===lastKey);
-    lastKey=key;
-    const answer=a*b, opts=new Set([answer]);
-    while(opts.size<4){
-      let candidate;
-      if(Math.random()<.65){
-        const delta=[-18,-9,-8,-6,-4,-3,-2,-1,1,2,3,4,6,8,9,18][Math.floor(Math.random()*16)];
-        candidate=answer+delta;
-      }else candidate=1+Math.floor(Math.random()*81);
-      if(candidate>=1&&candidate<=81)opts.add(candidate);
-    }
-    const choices=[...opts].sort(()=>Math.random()-.5);
-    return {a,b,answer,choices};
-  }
-  function updateUI(){
-    els.score.textContent=String(score).padStart(4,'0');
-    els.combo.textContent=`${combo} 🔥`;
-    const hp=Math.max(0,TARGET-score);
-    els.hpText.textContent=`${hp.toLocaleString()} / ${TARGET.toLocaleString()}`;
-    els.hpFill.style.width=`${hp/TARGET*100}%`;
-    const pct=score/TARGET;
-    els.bossWrap.classList.toggle('angry',pct>=.3);
-    els.bossWrap.classList.toggle('critical',pct>=.6);
-    if(pct>=.9){els.bossName.textContent='大ピンチ！タコ大魔王';els.speech.textContent='ぐぬぬ…必殺技だけはやめてくれ〜！';}
-    else if(pct>=.6){els.bossName.textContent='怒りのタコ大魔王';}
-    else if(pct>=.3){els.bossName.textContent='本気モード！タコ大魔王';}
-    else {els.bossName.textContent='深海の支配者・タコ大魔王';}
-    els.stage.textContent=pct>=.66?'🌋 STAGE 3：深海の決戦':pct>=.33?'⚡ STAGE 2：怒りの海域':'🌊 STAGE 1：海底城';
-    els.accuracy.textContent=`正解率 ${asked?Math.round(correct/asked*100):0}%`;
-  }
-  function nextQuestion(){
-    if(!running)return;
-    locked=false;timeLeft=ROUND_TIME;roundStart=performance.now();current=makeQuestion();
-    els.qNumber.textContent=String(asked+1).padStart(2,'0');
-    els.question.textContent=`${current.a} × ${current.b} ＝ ?`;
-    els.feedback.textContent='正解を選んでタコに攻撃しよう！';els.feedback.className='feedback';
-    els.answers.innerHTML='';
-    current.choices.forEach(n=>{
-      const btn=document.createElement('button');btn.className='answer';btn.textContent=n;btn.type='button';
-      btn.addEventListener('click',()=>answer(n,btn));els.answers.appendChild(btn);
-    });
-    audio(340,.05,'sine',.018);
-    clearInterval(timerId);
-    timerId=setInterval(()=>{
-      if(!running||locked)return;
-      timeLeft=Math.max(0,ROUND_TIME-(performance.now()-roundStart)/1000);
-      els.timeNum.textContent=timeLeft.toFixed(1);
-      els.timerFill.style.width=`${timeLeft/ROUND_TIME*100}%`;
-      els.timerFill.classList.toggle('low',timeLeft<=3);
-      if(timeLeft<=0)answer(null,null);
-    },70);
-    updateUI();
-  }
-  function floatText(text,color){
-    const el=document.createElement('div');el.className='float-text';el.textContent=text;el.style.color=color||'';
-    el.style.left=`${35+Math.random()*30}%`;el.style.top='38%';els.arena.appendChild(el);setTimeout(()=>el.remove(),1000);
-  }
-  function flash(){
-    const f=document.createElement('div');f.className='flash';els.arena.appendChild(f);setTimeout(()=>f.remove(),250);
-  }
-  function disableAnswers(){[...els.answers.children].forEach(b=>b.disabled=true);}
-  function answer(value,btn){
-    if(!running||locked)return;
-    locked=true;asked++;clearInterval(timerId);
-    const isCorrect=value===current.answer;
-    disableAnswers();
-    if(btn)btn.classList.add(isCorrect?'correct':'wrong');
-    [...els.answers.children].forEach(b=>{if(Number(b.textContent)===current.answer)b.classList.add('correct');});
-    if(isCorrect){
-      correct++;combo++;bestCombo=Math.max(bestCombo,combo);
-      const bonus=Math.min((combo-1)*10,100), speedBonus=Math.max(0,Math.floor(timeLeft*3));
-      const gain=100+bonus+speedBonus;score=Math.min(TARGET,score+gain);
-      els.feedback.textContent=`正解！ ${current.a} × ${current.b} ＝ ${current.answer}　+${gain} pt`;
-      els.feedback.className='feedback good';els.speech.textContent=combo>=5?'ぐわぁ！コンボ攻撃が効いている！':'ぐっ…やるな！';
-      els.bossWrap.classList.remove('hit');void els.bossWrap.offsetWidth;els.bossWrap.classList.add('hit');
-      flash();floatText(combo>=5?'🔥 '+combo+' COMBO!':'+'+gain+' PT');
-      audio(520+Math.min(combo*28,280),.18,'triangle',.055,250);
-      if(combo>=3)audio(780,.12,'sine',.035,180);
-      if(combo>=5)els.panel.classList.add('screen-shake');
-      setTimeout(()=>els.panel.classList.remove('screen-shake'),280);
-    }else{
-      combo=0;wrongs.push({a:current.a,b:current.b,answer:current.answer,chosen:value});
-      els.feedback.textContent=value===null?`時間切れ！ 正解は ${current.answer}`:`おしい！ 正解は ${current.answer}`;
-      els.feedback.className='feedback bad';els.speech.textContent=['フハハ！あわてるな！','まだまだだな！','その答えでは通じぬぞ！'][Math.floor(Math.random()*3)];
-      els.panel.classList.remove('screen-shake');void els.panel.offsetWidth;els.panel.classList.add('screen-shake');
-      audio(180,.18,'sawtooth',.035,-70);
-    }
-    updateUI();
-    if(score>=TARGET){setTimeout(victory,700);return;}
-    nextId=setTimeout(nextQuestion,850);
-  }
-  function stop(){running=false;locked=true;clearInterval(timerId);clearTimeout(nextId);}
-  function victory(){
-    if(!running)return;stop();fanfare();
-    els.speech.textContent='うわあああ！九九パワーに負けた〜！';
-    els.bossWrap.classList.add('hit','critical');els.eyeL.setAttribute('ry','4');els.eyeR.setAttribute('ry','4');
-    els.mouth.setAttribute('d','M130 136 Q151 112 172 136');
-    for(let i=0;i<3;i++)setTimeout(flash,i*160);
-    els.resultIcon.textContent='🏆';els.resultTitle.textContent='タコ大魔王 撃破！！';
-    els.resultMessage.textContent='九九パワーMAX！海の平和を取り戻した！';
-    finishResult(true);
-  }
-  function finishResult(win){
-    const accuracy=asked?Math.round(correct/asked*100):0;
-    const improved=score>bestScore;
-    if(improved){bestScore=score;localStorage.setItem('octoBestScore',String(bestScore));}
-    if(bestCombo>personalBest){personalBest=bestCombo;localStorage.setItem('octoBestCombo',String(personalBest));}
-    els.best.textContent=bestScore;
-    els.finalScore.textContent=`${score.toLocaleString()} pt`;
-    els.resultStats.textContent=`正解 ${correct} / ${asked} 問　・　正解率 ${accuracy}%　・　最大コンボ ${bestCombo}`;
-    els.bestMessage.textContent=(improved?'🎉 ハイスコア更新！ ':'')+`自己ベストコンボ：${personalBest}`;
-    if(wrongs.length){
-      els.review.classList.remove('hidden');
-      els.review.innerHTML='<strong>📘 まちがえた問題</strong><br>'+wrongs.map(w=>`${w.a} × ${w.b} ＝ <strong>${w.answer}</strong>${w.chosen===null?'（時間切れ）':`（選んだ答え：${w.chosen}）`}`).join('<br>');
-      els.reviewBtn.classList.remove('hidden');
-    }else{els.review.classList.add('hidden');els.review.innerHTML='';els.reviewBtn.classList.add('hidden');}
-    els.resultOverlay.classList.remove('hidden');
-  }
-  function start(){
-    stop();score=0;combo=0;bestCombo=0;asked=0;correct=0;current=null;lastKey='';wrongs=[];
-    els.resultOverlay.classList.add('hidden');els.startOverlay.classList.add('hidden');
-    els.bossWrap.classList.remove('hit','critical','angry');els.eyeL.setAttribute('ry','15');els.eyeR.setAttribute('ry','15');els.mouth.setAttribute('d','M130 125 Q151 141 172 124');
-    els.bossWrap.style.filter='';els.speech.textContent='フハハハ！九九で勝負だ！';
-    els.hpFill.style.width='100%';running=true;nextQuestion();
-  }
-  $('startBtn').addEventListener('click',start);
-  $('howBtn').addEventListener('click',()=>els.howText.classList.toggle('hidden'));
-  $('retryBtn').addEventListener('click',start);
-  els.reviewBtn.addEventListener('click',()=>els.review.classList.toggle('hidden'));
-  document.addEventListener('visibilitychange',()=>{if(document.hidden&&running){clearInterval(timerId);roundStart=performance.now()-(ROUND_TIME-timeLeft)*1000;}});
-  // Safe initial state: show title screen; gameplay starts after the player's tap.
+(()=>{'use strict';
+const TARGET=3000,ROUND_TIME=10,$=id=>document.getElementById(id);
+const el={};for(const id of ['score','combo','best','bgmBtn','sfxBtn','hpText','hpFill','bossWrap','bossName','eyeL','eyeR','mouth','speech','question','qNumber','timeNum','timerFill','answers','feedback','stage','accuracy','arena','combatPanel','startOverlay','resultOverlay','howText','finalScore','resultStats','bestMessage','review','reviewBtn'])el[id]=$(id);
+let score=0,combo=0,bestCombo=0,asked=0,correct=0,current=null,timeLeft=ROUND_TIME,running=false,locked=false,timerId=null,nextId=null,lastKey='',wrongs=[],roundStart=0;
+const store=(key,value)=>{try{localStorage.setItem(key,String(value))}catch(e){}};const load=key=>{try{return Number(localStorage.getItem(key)||0)}catch(e){return 0}};
+let bestScore=load('octoBestScore'),personalBest=load('octoBestCombo');el.best.textContent=bestScore;
+// All music and effects are synthesized locally using Web Audio; no downloads required.
+let ctx=null,master=null,bgmBus=null,sfxBus=null,bgmOn=true,sfxOn=true,musicTimer=null,musicStep=0,nextBeat=0;
+function unlock(){try{if(!ctx){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;ctx=new AC();master=ctx.createGain();master.gain.value=.72;master.connect(ctx.destination);bgmBus=ctx.createGain();bgmBus.gain.value=.32;bgmBus.connect(master);sfxBus=ctx.createGain();sfxBus.gain.value=.7;sfxBus.connect(master)}if(ctx.state==='suspended')ctx.resume().catch(()=>{})}catch(e){}}
+function tone(freq,duration=.15,type='sine',vol=.09,slide=0,when=null,bus='sfx'){
+ if((bus==='sfx'&&!sfxOn)||(bus==='bgm'&&!bgmOn))return;
+ unlock();if(!ctx)return;
+ try{const t=Math.max(ctx.currentTime,when??ctx.currentTime),o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(Math.max(30,freq),t);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,freq+slide),t+duration);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(Math.max(.0002,vol),t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+duration);o.connect(g);g.connect(bus==='bgm'?bgmBus:sfxBus);o.start(t);o.stop(t+duration+.02)}catch(e){}
+}
+const notes=[220,0,261.63,329.63,392,329.63,261.63,0,196,0,246.94,293.66,392,293.66,246.94,0,174.61,0,220,261.63,349.23,261.63,220,0,196,246.94,293.66,392,440,392,293.66,246.94];
+function scheduleMusic(){if(!running||!bgmOn||!ctx||ctx.state!=='running')return;const beat=.205;while(nextBeat<ctx.currentTime+.22){const i=musicStep%notes.length,n=notes[i];if(n)tone(n,.17,'triangle',.095,0,nextBeat,'bgm');if(i%4===0)tone([110,98,87.31,98][Math.floor(i/8)%4],.7,'sine',.13,0,nextBeat,'bgm');if(i%2===0)tone(520,.027,'square',.008,-300,nextBeat,'bgm');nextBeat+=beat;musicStep++}}
+function startMusic(){stopMusic();if(!bgmOn||!running)return;unlock();if(!ctx)return;musicStep=0;nextBeat=ctx.currentTime+.06;musicTimer=setInterval(scheduleMusic,90);scheduleMusic()}
+function stopMusic(){if(musicTimer!==null){clearInterval(musicTimer);musicTimer=null}if(bgmBus&&ctx){bgmBus.gain.cancelScheduledValues(ctx.currentTime);bgmBus.gain.setValueAtTime(bgmBus.gain.value,ctx.currentTime);bgmBus.gain.setTargetAtTime(0,ctx.currentTime,.02);setTimeout(()=>{if(bgmBus&&bgmOn)bgmBus.gain.setTargetAtTime(.32,ctx.currentTime,.04)},150)}}
+function effect(name){if(!sfxOn)return;unlock();if(!ctx)return;const t=ctx.currentTime;switch(name){case 'question':tone(340,.055,'sine',.04);break;case 'hit':tone(330,.12,'sawtooth',.13,450);tone(720,.19,'triangle',.13,210,t+.07);tone(105,.18,'triangle',.16,-65,t+.02);break;case 'combo':for(let i=0;i<4;i++)tone([523,659,784,1047][i],.13,'triangle',.14,80,t+i*.065);break;case 'wrong':tone(230,.2,'sawtooth',.1,-160);tone(120,.24,'triangle',.13,-65,t+.08);break;case 'boss':tone(150,.45,'sawtooth',.16,-105);tone(65,.35,'triangle',.15,-25,t+.07);break;case 'victory':[523,659,784,1047,784,1047,1318].forEach((n,i)=>tone(n,i===6?.7:.23,'triangle',.17,0,t+i*.16));break}}
+function updateSoundButtons(){el.bgmBtn.textContent=bgmOn?'🎵 BGM ON':'🎵 BGM OFF';el.sfxBtn.textContent=sfxOn?'🔊 効果音 ON':'🔇 効果音 OFF';el.bgmBtn.classList.toggle('off',!bgmOn);el.sfxBtn.classList.toggle('off',!sfxOn)}
+el.bgmBtn.addEventListener('click',()=>{unlock();bgmOn=!bgmOn;if(bgmOn&&running){if(bgmBus)bgmBus.gain.setValueAtTime(.32,ctx.currentTime);startMusic()}else stopMusic();updateSoundButtons()});el.sfxBtn.addEventListener('click',()=>{unlock();sfxOn=!sfxOn;updateSoundButtons();if(sfxOn)tone(660,.1)});
+function makeQuestion(){let a,b,key;do{a=1+Math.floor(Math.random()*9);b=1+Math.floor(Math.random()*9);key=`${a}x${b}`}while(key===lastKey);lastKey=key;const answer=a*b,opts=new Set([answer]);while(opts.size<4){let n;if(Math.random()<.65){const ds=[-18,-9,-8,-6,-4,-3,-2,-1,1,2,3,4,6,8,9,18];n=answer+ds[Math.floor(Math.random()*ds.length)]}else n=1+Math.floor(Math.random()*81);if(n>=1&&n<=81)opts.add(n)}const choices=[...opts];for(let i=choices.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[choices[i],choices[j]]=[choices[j],choices[i]]}return{a,b,answer,choices}}
+function updateUI(){el.score.textContent=String(score).padStart(4,'0');el.combo.textContent=`${combo} 🔥`;const hp=Math.max(0,TARGET-score),pct=score/TARGET;el.hpText.textContent=`${hp.toLocaleString()} / ${TARGET.toLocaleString()}`;el.hpFill.style.width=`${hp/TARGET*100}%`;el.bossWrap.classList.toggle('angry',pct>=.3);el.bossWrap.classList.toggle('critical',pct>=.6);el.bossName.textContent=pct>=.9?'大ピンチ！タコ大魔王':pct>=.6?'怒りのタコ大魔王':pct>=.3?'本気モード！タコ大魔王':'深海の支配者・タコ大魔王';el.stage.textContent=pct>=.66?'🌋 STAGE 3：深海の決戦':pct>=.33?'⚡ STAGE 2：怒りの海域':'🌊 STAGE 1：海底城';el.accuracy.textContent=`正解率 ${asked?Math.round(correct/asked*100):0}%`}
+function nextQuestion(){if(!running)return;locked=false;timeLeft=ROUND_TIME;roundStart=performance.now();current=makeQuestion();el.qNumber.textContent=String(asked+1).padStart(2,'0');el.question.textContent=`${current.a} × ${current.b} ＝ ?`;el.feedback.textContent='正解を選んでタコに攻撃しよう！';el.feedback.className='feedback';el.answers.replaceChildren();for(const n of current.choices){const btn=document.createElement('button');btn.className='answer';btn.textContent=n;btn.type='button';btn.addEventListener('click',()=>answer(n,btn));el.answers.appendChild(btn)}effect('question');clearInterval(timerId);el.timeNum.textContent='10.0';el.timerFill.style.width='100%';el.timerFill.classList.remove('low');timerId=setInterval(()=>{if(!running||locked)return;timeLeft=Math.max(0,ROUND_TIME-(performance.now()-roundStart)/1000);el.timeNum.textContent=timeLeft.toFixed(1);el.timerFill.style.width=`${timeLeft/ROUND_TIME*100}%`;el.timerFill.classList.toggle('low',timeLeft<=3);if(timeLeft<=0)answer(null,null)},70);updateUI()}
+function floatText(text){const d=document.createElement('div');d.className='float-text';d.textContent=text;d.style.left=`${35+Math.random()*30}%`;d.style.top='38%';el.arena.appendChild(d);setTimeout(()=>d.remove(),1000)}function flash(){const d=document.createElement('div');d.className='flash';el.arena.appendChild(d);setTimeout(()=>d.remove(),250)}
+function answer(value,btn){if(!running||locked)return;locked=true;asked++;clearInterval(timerId);const good=value===current.answer;[...el.answers.children].forEach(b=>{b.disabled=true;if(Number(b.textContent)===current.answer)b.classList.add('correct')});if(btn)btn.classList.add(good?'correct':'wrong');if(good){correct++;combo++;bestCombo=Math.max(bestCombo,combo);const bonus=Math.min((combo-1)*10,100),speed=Math.max(0,Math.floor(timeLeft*3)),gain=100+bonus+speed;score=Math.min(TARGET,score+gain);el.feedback.textContent=`正解！ ${current.a} × ${current.b} ＝ ${current.answer}　+${gain} pt`;el.feedback.className='feedback good';el.speech.textContent=combo>=5?'ぐわぁ！コンボ攻撃が効いている！':'ぐっ…やるな！';el.bossWrap.classList.remove('hit');void el.bossWrap.offsetWidth;el.bossWrap.classList.add('hit');flash();floatText(combo>=5?'🔥 '+combo+' COMBO!':'+'+gain+' PT');effect('hit');if(combo>=5&&combo%5===0){effect('combo');el.combatPanel.classList.add('screen-shake');setTimeout(()=>el.combatPanel.classList.remove('screen-shake'),280)}if(score>=TARGET)effect('boss')}else{combo=0;wrongs.push({a:current.a,b:current.b,answer:current.answer,chosen:value});el.feedback.textContent=value===null?`時間切れ！ 正解は ${current.answer}`:`おしい！ 正解は ${current.answer}`;el.feedback.className='feedback bad';el.speech.textContent=['フハハ！あわてるな！','まだまだだな！','次はがんばれ！'][Math.floor(Math.random()*3)];el.combatPanel.classList.remove('screen-shake');void el.combatPanel.offsetWidth;el.combatPanel.classList.add('screen-shake');setTimeout(()=>el.combatPanel.classList.remove('screen-shake'),280);effect('wrong')}updateUI();if(score>=TARGET){nextId=setTimeout(victory,700);return}nextId=setTimeout(nextQuestion,850)}
+function stop(){running=false;locked=true;clearInterval(timerId);clearTimeout(nextId);stopMusic()}
+function victory(){if(!running)return;stop();effect('victory');el.speech.textContent='うわあああ！九九パワーに負けた〜！';el.bossWrap.classList.add('hit','critical');el.eyeL.setAttribute('ry','4');el.eyeR.setAttribute('ry','4');el.mouth.setAttribute('d','M130 136 Q151 112 172 136');for(let i=0;i<3;i++)setTimeout(flash,i*160);const accuracy=asked?Math.round(correct/asked*100):0,improved=score>bestScore;if(improved){bestScore=score;store('octoBestScore',bestScore)}if(bestCombo>personalBest){personalBest=bestCombo;store('octoBestCombo',personalBest)}el.best.textContent=bestScore;el.finalScore.textContent=`${score.toLocaleString()} pt`;el.resultStats.textContent=`正解 ${correct} / ${asked} 問 ・ 正解率 ${accuracy}% ・ 最大コンボ ${bestCombo}`;el.bestMessage.textContent=(improved?'🎉 ハイスコア更新！ ':'')+`自己ベストコンボ：${personalBest}`;if(wrongs.length){el.review.replaceChildren();const title=document.createElement('strong');title.textContent='📘 まちがえた問題';el.review.append(title,document.createElement('br'));for(const w of wrongs){const line=document.createElement('div');line.textContent=`${w.a} × ${w.b} ＝ ${w.answer} ${w.chosen===null?'（時間切れ）':`（選んだ答え：${w.chosen}）`}`;el.review.appendChild(line)}el.review.classList.add('hidden');el.reviewBtn.classList.remove('hidden')}else{el.review.replaceChildren();el.review.classList.add('hidden');el.reviewBtn.classList.add('hidden')}el.resultOverlay.classList.remove('hidden')}
+function start(){stop();unlock();score=0;combo=0;bestCombo=0;asked=0;correct=0;current=null;lastKey='';wrongs=[];el.resultOverlay.classList.add('hidden');el.startOverlay.classList.add('hidden');el.bossWrap.classList.remove('hit','critical','angry');el.eyeL.setAttribute('ry','15');el.eyeR.setAttribute('ry','15');el.mouth.setAttribute('d','M130 125 Q151 141 172 124');el.speech.textContent='フハハハ！九九で勝負だ！';el.hpFill.style.width='100%';running=true;startMusic();nextQuestion()}
+$('startBtn').addEventListener('click',start);$('howBtn').addEventListener('click',()=>el.howText.classList.toggle('hidden'));$('retryBtn').addEventListener('click',start);el.reviewBtn.addEventListener('click',()=>el.review.classList.toggle('hidden'));
+// Pause timer and music when iPhone Safari is backgrounded; resume on return.
+let paused=false;document.addEventListener('visibilitychange',()=>{if(document.hidden){if(running){paused=true;clearInterval(timerId);if(musicTimer!==null){clearInterval(musicTimer);musicTimer=null}}}else if(paused&&running){paused=false;roundStart=performance.now()-(ROUND_TIME-timeLeft)*1000;clearInterval(timerId);timerId=setInterval(()=>{if(!running||locked)return;timeLeft=Math.max(0,ROUND_TIME-(performance.now()-roundStart)/1000);el.timeNum.textContent=timeLeft.toFixed(1);el.timerFill.style.width=`${timeLeft/ROUND_TIME*100}%`;el.timerFill.classList.toggle('low',timeLeft<=3);if(timeLeft<=0)answer(null,null)},70);if(bgmOn)startMusic()}});
 })();
-</script>
-</body>
-</html>
+</script></body></html>
